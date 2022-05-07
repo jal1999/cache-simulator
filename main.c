@@ -155,8 +155,8 @@ int main() {
         access(c, input, add);
         scanf("%x", &add);
     }
-    free_cache(c, input);
     print_stats(c, input);
+    free_cache(c, input);
     return 0;
 }
 
