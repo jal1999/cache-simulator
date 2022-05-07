@@ -132,6 +132,14 @@ void print_stats(Cache* cache, Input input);
  */
 char* lowercase(char *str, int len);
 
+/**
+ * Frees all structs in cache
+ *
+ * @param cache the cache
+ * @param input fundamental parameters of the cache
+ */
+ void free_cache(Cache *cache, Input input);
+
 /* Will be using this variable as a clock, as to keep track of how recently a
  * line has been accessed in a given set. Its value will be stored in the times[] in
  * each Set
@@ -147,6 +155,7 @@ int main() {
         access(c, input, add);
         scanf("%x", &add);
     }
+    free_cache(c, input);
     print_stats(c, input);
     return 0;
 }
@@ -310,4 +319,18 @@ char* lowercase(char *str, int len) {
         lower[i] = tolower(str[i]);
     }
     return lower;
+}
+
+void free_cache(Cache *cache, Input input) {
+    for (int i = 0; i < input.S; ++i) {
+        Set* curr_set = cache->sets[i];
+        for (int j = 0; j < input.E; ++j) {
+            Line *curr_line = curr_set->lines[j];
+            free(curr_line);
+        }
+        free(curr_set->lines);
+        free(curr_set);
+    }
+    free(cache->sets);
+    free(cache);
 }
